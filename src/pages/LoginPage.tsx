@@ -184,7 +184,7 @@ export function LoginPage({ mode = 'login' }: LoginPageProps) {
         >
           <div className="mx-auto w-full max-w-[500px] lg:ml-auto lg:mr-0 lg:w-[min(108%,74dvh)] lg:max-w-none lg:translate-x-[10%] xl:translate-x-[12%]">
             <img
-              src="/images/auth-laptop-mockup.png"
+              src={`${import.meta.env.BASE_URL}images/auth-laptop-mockup.png`}
               width={2048}
               height={1247}
               alt="SOHNNE Dashboard workspace preview on MacBook Pro"
