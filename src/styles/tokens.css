@@ -1,0 +1,321 @@
+@import "tailwindcss";
+
+:root {
+  /* Fonts */
+  --font-serif: "PT Serif", Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Surfaces */
+  --bg-canvas: #ffffff;
+  --bg-surface: #f5f6f8;
+  --bg-subtle: #f3f4f6;
+  --bg-hover: #f9fafb;
+
+  /* Borders */
+  --border-hairline: #e5e7eb;
+  --border-strong: #d1d5db;
+
+  /* Text / Ink (WCAG AA compliant contrast on #FFFFFF / #F5F6F8) */
+  --ink-primary: #131313;
+  --ink-secondary: #4b5563;
+  --ink-muted: #555555;
+
+  /* Brand Accent (SOHNNE Nokia Blue) */
+  --brand-primary: #0057ff;
+  --brand-primary-hover: #0046d5;
+  --brand-secondary: #66acff;
+  --brand-tint: #dbeafe;
+  --brand-tint-soft: #eef4ff;
+
+  /* Semantic Accents */
+  --badge-sunglow: #ffca3a;
+  --status-paid-bg: #dcfce7;
+  --status-paid-ink: #047857;
+  --status-processing-bg: #dbeafe;
+  --status-processing-ink: #1d4ed8;
+  --status-returning-bg: #ffedd5;
+  --status-returning-ink: #c2410c;
+  --status-refunded-bg: #fee2e2;
+  --status-refunded-ink: #b91c1c;
+
+  /* Motion Timing Curves (Emil Kowalski / animate skill) */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@layer base {
+  html,
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-canvas);
+    color: var(--ink-primary);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  .font-serif-display {
+    font-family: var(--font-serif);
+    letter-spacing: -0.02em;
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
+}
+
+/* Tactile Press Feedback */
+.btn-tactile {
+  transition:
+    transform 150ms var(--ease-out),
+    background-color 160ms var(--ease-out),
+    border-color 160ms var(--ease-out),
+    color 160ms var(--ease-out);
+}
+.btn-tactile:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+/* Gate hover lift on fine hover devices only (prevents sticky hover on touch) */
+@media (hover: hover) and (pointer: fine) {
+  .card-hover-lift {
+    transition:
+      transform 180ms var(--ease-out),
+      border-color 180ms var(--ease-out),
+      box-shadow 180ms var(--ease-out);
+  }
+  .card-hover-lift:hover {
+    transform: translateY(-2px);
+    border-color: #cbd5e1;
+    box-shadow: 0 6px 18px -6px rgba(15, 23, 42, 0.08);
+  }
+}
+
+/* Native Top-Layer Modal & Slide-Over Dialog Animations (@starting-style) */
+dialog.sohnne-dialog {
+  margin: auto;
+  max-height: calc(100dvh - 2rem);
+  max-width: calc(100vw - 2rem);
+  border: 1px solid var(--border-hairline);
+  border-radius: 16px;
+  background: var(--bg-canvas);
+  color: var(--ink-primary);
+  padding: 0;
+  box-shadow: 0 24px 48px -12px rgba(15, 23, 42, 0.18);
+  overscroll-behavior: contain;
+  opacity: 0;
+  transform: scale(0.96) translateY(8px);
+  transition:
+    opacity 220ms var(--ease-out),
+    transform 220ms var(--ease-out),
+    overlay 220ms allow-discrete,
+    display 220ms allow-discrete;
+}
+
+dialog.sohnne-dialog[open] {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+@starting-style {
+  dialog.sohnne-dialog[open] {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+}
+
+dialog.sohnne-drawer {
+  margin: 0 0 0 auto;
+  height: 100dvh;
+  max-height: 100dvh;
+  width: min(520px, 100vw);
+  max-width: 100vw;
+  border-left: 1px solid var(--border-hairline);
+  background: var(--bg-canvas);
+  color: var(--ink-primary);
+  padding: 0;
+  box-shadow: -16px 0 40px -12px rgba(15, 23, 42, 0.14);
+  overscroll-behavior: contain;
+  transform: translateX(100%);
+  opacity: 0.4;
+  transition:
+    transform 320ms var(--ease-drawer),
+    opacity 220ms var(--ease-out),
+    overlay 320ms allow-discrete,
+    display 320ms allow-discrete;
+}
+
+dialog.sohnne-drawer[open] {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+@starting-style {
+  dialog.sohnne-drawer[open] {
+    transform: translateX(100%);
+    opacity: 0.4;
+  }
+}
+
+dialog.sohnne-drawer-left {
+  margin: 0 auto 0 0;
+  height: 100dvh;
+  max-height: 100dvh;
+  width: min(296px, 86vw);
+  max-width: 100vw;
+  border-right: 1px solid var(--border-hairline);
+  background: var(--bg-canvas);
+  padding: 0;
+  overscroll-behavior: contain;
+  transform: translateX(-100%);
+  transition:
+    transform 320ms var(--ease-drawer),
+    overlay 320ms allow-discrete,
+    display 320ms allow-discrete;
+}
+
+dialog.sohnne-drawer-left[open] {
+  transform: translateX(0);
+}
+
+@starting-style {
+  dialog.sohnne-drawer-left[open] {
+    transform: translateX(-100%);
+  }
+}
+
+dialog.sohnne-dialog::backdrop,
+dialog.sohnne-drawer::backdrop,
+dialog.sohnne-drawer-left::backdrop {
+  background-color: rgba(15, 23, 42, 0.36);
+  backdrop-filter: blur(2px);
+  overscroll-behavior: contain;
+  opacity: 0;
+  transition:
+    opacity 220ms var(--ease-out),
+    overlay 220ms allow-discrete,
+    display 220ms allow-discrete;
+}
+
+dialog.sohnne-dialog[open]::backdrop,
+dialog.sohnne-drawer[open]::backdrop,
+dialog.sohnne-drawer-left[open]::backdrop {
+  opacity: 1;
+}
+
+@starting-style {
+  dialog.sohnne-dialog[open]::backdrop,
+  dialog.sohnne-drawer[open]::backdrop,
+  dialog.sohnne-drawer-left[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+/* Command Palette: instant per animate skill rule (high-freq keyboard shortcut) */
+dialog.sohnne-command {
+  margin: 12vh auto auto;
+  width: min(560px, calc(100vw - 2rem));
+  border: 1px solid var(--border-hairline);
+  border-radius: 14px;
+  background: var(--bg-canvas);
+  padding: 0;
+  box-shadow: 0 24px 48px -12px rgba(15, 23, 42, 0.22);
+  overscroll-behavior: contain;
+}
+
+dialog.sohnne-command::backdrop {
+  background-color: rgba(15, 23, 42, 0.32);
+  overscroll-behavior: contain;
+}
+
+/* Popover from trigger origin */
+.sohnne-popover {
+  transform-origin: var(--transform-origin, top left);
+  opacity: 1;
+  transform: scale(1);
+  transition:
+    opacity 160ms var(--ease-out),
+    transform 160ms var(--ease-out);
+}
+
+@starting-style {
+  .sohnne-popover {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+/* Branded Custom Select Dropdown Menu */
+.sohnne-select-menu {
+  transform-origin: top center;
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition:
+    opacity 150ms var(--ease-out),
+    transform 150ms var(--ease-out);
+}
+
+@starting-style {
+  .sohnne-select-menu {
+    opacity: 0;
+    transform: scale(0.97) translateY(-4px);
+  }
+}
+
+/* High-visibility keyboard focus ring */
+:where(a, button, input, select, textarea, [tabindex="0"]):focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+}
+
+/* Route View Transition Timing */
+::view-transition-group(*) {
+  animation-duration: 240ms;
+  animation-timing-function: var(--ease-out);
+}
+
+/* Smooth Feed Row Insertion */
+.feed-item-enter {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 220ms var(--ease-out),
+    transform 220ms var(--ease-out);
+}
+
+@starting-style {
+  .feed-item-enter {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* Reduced Motion: gently degrade transform-heavy motion, keep meaningful fades */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+
+  dialog.sohnne-dialog,
+  dialog.sohnne-drawer,
+  dialog.sohnne-drawer-left,
+  .sohnne-popover,
+  .sohnne-select-menu,
+  .feed-item-enter {
+    transform: none !important;
+    transition-duration: 120ms !important;
+  }
+
+  .card-hover-lift:hover,
+  .btn-tactile:active:not(:disabled) {
+    transform: none !important;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
